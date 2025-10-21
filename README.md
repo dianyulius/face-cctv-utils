@@ -4,7 +4,7 @@ Public repository for Face CCTV utility scripts and client deployment tools.
 
 ## 🛠️ Available Scripts
 
-### fix_service.sh
+### fix.sh (Recommended)
 
 **Purpose:** Fix Face CCTV systemd service file for Spy Pen hotspot support
 
@@ -12,6 +12,7 @@ Public repository for Face CCTV utility scripts and client deployment tools.
 
 **Solution:** This script automatically:
 - ✅ Removes the NoNewPrivileges restriction
+- ✅ Works non-interactively when piped (no prompts)
 - ✅ Creates timestamped backup of service file
 - ✅ Validates the fix was applied correctly
 - ✅ Restarts the service automatically
@@ -20,20 +21,21 @@ Public repository for Face CCTV utility scripts and client deployment tools.
 **Usage:**
 
 ```bash
-# One-liner (download and execute):
-curl -fsSL https://raw.githubusercontent.com/dianyulius/face-cctv-utils/main/fix_service.sh | sudo bash
+# One-liner (easiest - works non-interactively):
+curl -fsSL https://raw.githubusercontent.com/dianyulius/face-cctv-utils/main/fix.sh | sudo bash
 
 # Or download first, then execute:
-curl -O https://raw.githubusercontent.com/dianyulius/face-cctv-utils/main/fix_service.sh
-sudo bash fix_service.sh
+curl -O https://raw.githubusercontent.com/dianyulius/face-cctv-utils/main/fix.sh
+sudo bash fix.sh
 ```
 
 **Safe to run:**
 - ✅ Idempotent (can run multiple times safely)
+- ✅ Auto-detects piped execution (no prompts needed)
 - ✅ Creates backup before making changes
 - ✅ Validates fix was applied
 - ✅ Restores backup if validation fails
-- ✅ Skip if already fixed
+- ✅ Skips if already fixed
 
 **Requirements:**
 - Root/sudo access
@@ -51,11 +53,21 @@ sudo bash fix_service.sh
 
 ---
 
+### fix_service.sh (Legacy)
+
+Same functionality as `fix.sh` but older version. Use `fix.sh` for latest updates.
+
+---
+
 ## 📦 For Face CCTV v1.1.0+
 
-**Note:** Face CCTV v1.1.0 and later automatically fix this during installation. This script is only needed for devices installed with v1.0.9 or earlier.
+**Note:** Face CCTV v1.1.0+ with Spy Pen hotspot support requires this service file fix.
 
-**Auto-update:** All devices will receive v1.1.0 automatically within 10 minutes. After auto-update, run this script to fix the service file if needed.
+**Auto-update:** All devices will receive v1.1.2 automatically. After auto-update, run this script once to fix the service file:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/dianyulius/face-cctv-utils/main/fix.sh | sudo bash
+```
 
 ---
 
@@ -71,6 +83,6 @@ Main Face CCTV repository (private): [dianyulius/face_cctv](https://github.com/d
 
 For issues with Face CCTV or these utilities, contact your administrator.
 
-**Version:** 1.0.0  
+**Version:** 1.1.0  
 **Last Updated:** October 21, 2025  
 **Compatible with:** Face CCTV v1.0.9+

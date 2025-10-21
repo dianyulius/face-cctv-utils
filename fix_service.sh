@@ -15,6 +15,13 @@ NC='\033[0m' # No Color
 
 SERVICE_FILE="/etc/systemd/system/face_cctv.service"
 
+# Check if running non-interactively (piped input)
+if [ ! -t 0 ]; then
+    AUTO_YES=true
+else
+    AUTO_YES=false
+fi
+
 echo ""
 echo "============================================================"
 echo "      Face CCTV - Service File Update"
@@ -53,13 +60,17 @@ if grep -q "NoNewPrivileges=true" "$SERVICE_FILE"; then
     echo "  - Add comment: # NoNewPrivileges disabled to allow nmcli/sudo for Spy Pen hotspot management"
     echo ""
     
-    # Confirm
-    read -p "Update service file? (y/n): " -n 1 -r
-    echo ""
-    
-    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-        echo "Update cancelled."
-        exit 0
+    # Confirm (skip if non-interactive)
+    if [ "$AUTO_YES" = false ]; then
+        read -p "Update service file? (y/n): " -n 1 -r
+        echo ""
+        
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            echo "Update cancelled."
+            exit 0
+        fi
+    else
+        echo -e "${GREEN}Running in non-interactive mode - auto-applying fix${NC}"
     fi
     
     echo ""
